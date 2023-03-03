@@ -1,13 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import doubleTick from '../assets/images/double-tick.png';
 import notesImage from '../assets/images/notes.png';
 import plusImage from '../assets/images/plus.png';
+import { added, allCompleted, clearCompleted } from '../redux/todos/actions';
 
 const Header = () => {
+    const dispatch = useDispatch();
+    const [input, setInput] = useState('');
+
+    const handleInputChange = (e) => {
+        setInput(e.target.value);
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(added(input));
+        setInput("");
+    }
+    const completeAll = () => {
+        dispatch(allCompleted());
+    }
+    const clearHandler = () => {
+        dispatch(clearCompleted());
+    }
     return (
         <div>
                     <form
-                        className="flex items-center bg-gray-100 px-4 py-4 rounded-md"
+                        className="flex items-center bg-gray-100 px-4 py-4 rounded-md" 
+                        onSubmit={handleSubmit}
                     >
                         <img
                             src={notesImage}
@@ -17,7 +37,8 @@ const Header = () => {
                         <input
                             type="text"
                             placeholder="Type your todo"
-                            className="w-full text-lg px-4 py-1 border-none outline-none bg-gray-100 text-gray-500"
+                            className="w-full text-lg px-4 py-1 border-none outline-none bg-gray-100 text-gray-500" 
+                            onChange={handleInputChange}
                         />
                         <button
                             type="submit"
@@ -32,9 +53,9 @@ const Header = () => {
                                 src={doubleTick}
                                 alt="Complete"
                             />
-                            <span>Complete All Tasks</span>
+                            <span onClick={completeAll}>Complete All Tasks</span>
                         </li>
-                        <li className="cursor-pointer">Clear completed</li>
+                        <li className="cursor-pointer" onClick={clearHandler}>Clear completed</li>
                     </ul>
                 </div>
     );

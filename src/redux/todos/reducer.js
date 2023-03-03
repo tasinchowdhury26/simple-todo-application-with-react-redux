@@ -11,7 +11,9 @@ const reducer = (state = initialState, action) => {
         case ADDED: 
         return [
             ...state,{
-                id: nextTodoId(state) // passing the whole list of todos on which reduce() will apply
+                id: nextTodoId(state), // passing the whole list of todos on which reduce() will apply,
+                text: action.payload,
+                completed: false
             }
         ]
         case TOGGLED: 
